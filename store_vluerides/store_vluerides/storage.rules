@@ -1,0 +1,135 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      // Matches this project's real deployed Firestore isAdmin() exactly
+      // (existence check only, no role field) — kept in sync deliberately.
+      return isAuthenticated()
+        && firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid));
+    }
+
+    function isRider() {
+      return isAuthenticated()
+        && firestore.exists(/databases/(default)/documents/riders/$(request.auth.uid));
+    }
+
+    function isCustomer() {
+      return isAuthenticated()
+        && firestore.exists(/databases/(default)/documents/customers/$(request.auth.uid));
+    }
+
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+
+    function isImage() {
+      return request.resource != null
+        && request.resource.contentType.matches('image/.*')
+        && request.resource.size < 5 * 1024 * 1024;
+    }
+
+    // Rider documents (profile, license, OR/CR, selfie) — uploaded by Admin
+    // only, since riders are created/edited exclusively from the admin panel.
+    match /rider_documents/{riderId}/{fileName} {
+      allow read: if isAdmin() || isOwner(riderId);
+      allow write: if isAdmin() && isImage();
+    }
+
+    // Store logo — uploaded by Admin from the admin panel.
+    match /stores/{storeId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() && isImage();
+    }
+
+    // Business permit — self-uploaded by the store owner during
+    // self-registration (external store app), reviewed by Admin.
+    match /permits/{storeId}/{fileName} {
+      allow read: if isAdmin() || isOwner(storeId);
+      allow write: if isOwner(storeId) && isImage();
+    }
+
+    // Subscription proof-of-payment (GCash/bank receipt) — uploaded by the
+    // store owner from the store portal, reviewed by Admin.
+    match /subscription_proofs/{storeId}/{fileName} {
+      allow read: if isAdmin() || isOwner(storeId);
+      allow write: if isOwner(storeId) && isImage();
+    }
+
+    // Product/menu-item photos — uploaded by the store owner from their
+    // own app; visible to any signed-in user browsing the store's menu.
+    match /stores/{storeId}/products/{productId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if (isOwner(storeId) || isAdmin()) && isImage();
+    }
+
+    // Admin's own profile photo.
+    match /admins/{adminId}/{fileName} {
+      allow read: if isAdmin() || isOwner(adminId);
+      // Prefer the direct uid check over isAdmin() here: this is always a
+      // self-upload (admin editing their own profile photo), and isAdmin()
+      // is a cross-service Firestore read that can be up to ~60s stale —
+      // no reason to pay that cost/risk for an ownership check this simple.
+      allow write: if (isOwner(adminId) || isAdmin()) && isImage();
+    }
+
+    // Generic avatar, flat-named "{uid}.ext" — riders/customers/store
+    // owners uploading their own profile picture.
+    match /profile_pictures/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated()
+        && fileName.matches(request.auth.uid + '\\..*')
+        && isImage();
+    }
+
+    // Delivery-completion evidence, flat-named "{deliveryId}.ext" —
+    // captured by the rider when marking a delivery complete.
+    match /proof_of_delivery/{fileName} {
+      allow read: if isAdmin() || isRider() || isCustomer();
+      allow write: if isRider() && isImage();
+    }
+
+    match /receipts/{fileName} {
+      allow read: if isAdmin() || isRider() || isCustomer();
+      allow write: if isRider() && isImage();
+    }
+
+    // Pay Bills proof-of-payment, flat-named "{requestId}-{stopIndex}.ext" —
+    // captured by the customer when they pay the rider directly (GCash/Maya/
+    // PayPal) before the rider pays the bill in person.
+    match /payment_proofs/{fileName} {
+      // Any signed-in user rather than isAdmin()/isRider()/isCustomer() —
+      // matches this app's existing delivery_requests write posture
+      // (Firestore rule there falls back to isSignedIn() for any
+      // authenticated user) and avoids the isCustomer()/isRider()
+      // cross-service Firestore existence check as a variable.
+      // read/write kept as separate allow statements deliberately:
+      // request.resource doesn't exist on a read request, so referencing
+      // it there (even behind isImage()) throws and fails closed to deny.
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isImage();
+    }
+
+    // Rider-generated earnings reports (PDF/CSV) — not images, so no
+    // isImage() check.
+    match /reports/{riderId}/{fileName} {
+      allow read: if isAdmin() || isOwner(riderId);
+      allow write: if isOwner(riderId);
+    }
+
+    // Rider's payment-method QR code(s), managed once in Settings (not
+    // per-order) — shown to customers on Pay Bills orders. Read is open to
+    // any signed-in user since a customer must view it once assigned.
+    match /payment_qr/{riderId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(riderId) && isImage();
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

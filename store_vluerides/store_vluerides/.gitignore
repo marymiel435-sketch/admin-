@@ -1,0 +1,20 @@
+# Miscellaneous
+*.log
+.DS_Store
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Node / React (react-app has its own .gitignore too)
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log

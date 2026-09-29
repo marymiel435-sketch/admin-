@@ -1,0 +1,914 @@
+{
+  "Tudela": [
+    {
+      "purok": "Purok-7",
+      "lat": 8.099,
+      "lng": 126.144
+    },
+    {
+      "purok": "Purok-6",
+      "lat": 8.087,
+      "lng": 126.102
+    },
+    {
+      "purok": "Purok-3",
+      "lat": 8.074,
+      "lng": 126.092
+    },
+    {
+      "purok": "Purok-5",
+      "lat": 8.073,
+      "lng": 126.117
+    },
+    {
+      "purok": "Purok-4",
+      "lat": 8.073,
+      "lng": 126.106
+    },
+    {
+      "purok": "Purok-2",
+      "lat": 8.068,
+      "lng": 126.103
+    },
+    {
+      "purok": "Purok-1",
+      "lat": 8.059,
+      "lng": 126.105
+    }
+  ],
+  "Santa Maria": [
+    {
+      "purok": "Purok Chicago",
+      "lat": 8.062,
+      "lng": 126.278
+    },
+    {
+      "purok": "Purok Indonesia",
+      "lat": 8.027,
+      "lng": 126.268
+    },
+    {
+      "purok": "Purok California",
+      "lat": 8.103,
+      "lng": 126.249
+    },
+    {
+      "purok": "Purok Jordan",
+      "lat": 8.017,
+      "lng": 126.16
+    },
+    {
+      "purok": "Purok Brazel",
+      "lat": 8.018,
+      "lng": 126.156
+    },
+    {
+      "purok": "Purok America",
+      "lat": 8.019,
+      "lng": 126.17
+    },
+    {
+      "purok": "Purok Switzerland",
+      "lat": 8.008,
+      "lng": 126.185
+    },
+    {
+      "purok": "Purok Pilipinas",
+      "lat": 8.022,
+      "lng": 126.16
+    },
+    {
+      "purok": "Purok Holand",
+      "lat": 8.022,
+      "lng": 126.153
+    },
+    {
+      "purok": "Purok Jedah",
+      "lat": 8.025,
+      "lng": 126.187
+    },
+    {
+      "purok": "Purok Jerusalem",
+      "lat": 8.026,
+      "lng": 126.168
+    },
+    {
+      "purok": "Purok Africa",
+      "lat": 8.026,
+      "lng": 126.214
+    },
+    {
+      "purok": "Purok Israel",
+      "lat": 8.044,
+      "lng": 126.198
+    },
+    {
+      "purok": "Purok Australla",
+      "lat": 8.054,
+      "lng": 126.21
+    },
+    {
+      "purok": "Purok China",
+      "lat": 8.051,
+      "lng": 126.236
+    },
+    {
+      "purok": "Purok Germany",
+      "lat": 8.089,
+      "lng": 126.237
+    },
+    {
+      "purok": "Purok Singgapore",
+      "lat": 8.071,
+      "lng": 126.226
+    },
+    {
+      "purok": "Purok Canada",
+      "lat": 7.987,
+      "lng": 126.251
+    },
+    {
+      "purok": "Purok New Israel",
+      "lat": 8.087,
+      "lng": 126.25
+    }
+  ],
+  "San Roque": [
+    {
+      "purok": "Zone-6",
+      "lat": 8.054,
+      "lng": 126.192
+    },
+    {
+      "purok": "Zone-3",
+      "lat": 8.043,
+      "lng": 126.158
+    },
+    {
+      "purok": "Zone-7",
+      "lat": 8.049,
+      "lng": 126.17
+    },
+    {
+      "purok": "Zone-1",
+      "lat": 8.039,
+      "lng": 126.151
+    },
+    {
+      "purok": "Zone-2",
+      "lat": 8.032,
+      "lng": 126.17
+    },
+    {
+      "purok": "Zone-4",
+      "lat": 8.03,
+      "lng": 126.16
+    },
+    {
+      "purok": "Zone-5",
+      "lat": 8.046,
+      "lng": 126.163
+    }
+  ],
+  "San Isidro": [
+    {
+      "purok": "Purok-2",
+      "lat": 8.052,
+      "lng": 126.152
+    },
+    {
+      "purok": "Purok-6",
+      "lat": 8.077,
+      "lng": 126.134
+    },
+    {
+      "purok": "Purok-5",
+      "lat": 8.062,
+      "lng": 126.136
+    },
+    {
+      "purok": "Purok-7",
+      "lat": 8.089,
+      "lng": 126.191
+    },
+    {
+      "purok": "Purok-3",
+      "lat": 8.054,
+      "lng": 126.139
+    },
+    {
+      "purok": "Purok-4",
+      "lat": 8.046,
+      "lng": 126.146
+    },
+    {
+      "purok": "Purok-1",
+      "lat": 8.083,
+      "lng": 126.149
+    }
+  ],
+  "San Ignacio": [
+    {
+      "purok": "Purok-3",
+      "lat": 8.003,
+      "lng": 126.15
+    },
+    {
+      "purok": "Purok-4B",
+      "lat": 7.993,
+      "lng": 126.148
+    },
+    {
+      "purok": "Purok-1",
+      "lat": 7.997,
+      "lng": 126.152
+    },
+    {
+      "purok": "Purok-4A",
+      "lat": 7.991,
+      "lng": 126.154
+    },
+    {
+      "purok": "Purok-5",
+      "lat": 8.009,
+      "lng": 126.15
+    },
+    {
+      "purok": "Purok-6",
+      "lat": 8.015,
+      "lng": 126.144
+    },
+    {
+      "purok": "Purok-2",
+      "lat": 8.001,
+      "lng": 126.15
+    }
+  ],
+  "Salvacion": [
+    {
+      "purok": "Purok-2A",
+      "lat": 8.021,
+      "lng": 126.122
+    },
+    {
+      "purok": "Purok-8",
+      "lat": 7.997,
+      "lng": 126.139
+    },
+    {
+      "purok": "Purok-7",
+      "lat": 7.998,
+      "lng": 126.129
+    },
+    {
+      "purok": "Purok-6",
+      "lat": 8.001,
+      "lng": 126.12
+    },
+    {
+      "purok": "Purok-4",
+      "lat": 7.984,
+      "lng": 126.132
+    },
+    {
+      "purok": "Purok-5",
+      "lat": 7.97,
+      "lng": 126.148
+    },
+    {
+      "purok": "Purok-2B",
+      "lat": 8.023,
+      "lng": 126.118
+    },
+    {
+      "purok": "Purok-1",
+      "lat": 8.015,
+      "lng": 126.116
+    },
+    {
+      "purok": "Purok-3",
+      "lat": 8.014,
+      "lng": 126.129
+    }
+  ],
+  "Pulanglupa": [
+    {
+      "purok": "Purok-5",
+      "lat": 8.009,
+      "lng": 126.075
+    },
+    {
+      "purok": "Purok-2",
+      "lat": 8.005,
+      "lng": 126.078
+    },
+    {
+      "purok": "Purok-12",
+      "lat": 8.007,
+      "lng": 126.079
+    },
+    {
+      "purok": "Purok-3",
+      "lat": 7.998,
+      "lng": 126.081
+    },
+    {
+      "purok": "Purok-4",
+      "lat": 8.004,
+      "lng": 126.087
+    },
+    {
+      "purok": "Purok-11",
+      "lat": 7.998,
+      "lng": 126.063
+    },
+    {
+      "purok": "Purok-1",
+      "lat": 8.003,
+      "lng": 126.073
+    },
+    {
+      "purok": "Purok-8",
+      "lat": 7.989,
+      "lng": 126.079
+    },
+    {
+      "purok": "Purok-6",
+      "lat": 8.008,
+      "lng": 126.059
+    },
+    {
+      "purok": "Purok-9",
+      "lat": 8.008,
+      "lng": 126.079
+    },
+    {
+      "purok": "Purok-10",
+      "lat": 8.01,
+      "lng": 126.079
+    },
+    {
+      "purok": "Purok-7",
+      "lat": 8.007,
+      "lng": 126.078
+    }
+  ],
+  "Poblacion": [
+    {
+      "purok": "Purok-8A",
+      "lat": 8.048,
+      "lng": 126.054
+    },
+    {
+      "purok": "Purok-7B",
+      "lat": 8.042,
+      "lng": 126.05
+    },
+    {
+      "purok": "Purok-2",
+      "lat": 8.049,
+      "lng": 126.059
+    },
+    {
+      "purok": "Purok-8",
+      "lat": 8.046,
+      "lng": 126.058
+    },
+    {
+      "purok": "Purok-1",
+      "lat": 8.056,
+      "lng": 126.054
+    },
+    {
+      "purok": "Purok-10",
+      "lat": 8.049,
+      "lng": 126.045
+    },
+    {
+      "purok": "Purok-15B Katagkanan",
+      "lat": 8.056,
+      "lng": 126.039
+    },
+    {
+      "purok": "Purok-1A",
+      "lat": 8.063,
+      "lng": 126.049
+    },
+    {
+      "purok": "Purok-3A",
+      "lat": 8.051,
+      "lng": 126.063
+    },
+    {
+      "purok": "Purok-15A Mahayahay",
+      "lat": 8.06,
+      "lng": 126.039
+    },
+    {
+      "purok": "Purok-12",
+      "lat": 8.045,
+      "lng": 126.075
+    },
+    {
+      "purok": "Purok-3",
+      "lat": 8.047,
+      "lng": 126.064
+    },
+    {
+      "purok": "Purok-16",
+      "lat": 8.051,
+      "lng": 126.09
+    },
+    {
+      "purok": "Purok-22",
+      "lat": 8.057,
+      "lng": 126.076
+    },
+    {
+      "purok": "Purok-13",
+      "lat": 8.015,
+      "lng": 126.053
+    },
+    {
+      "purok": "Purok-13B",
+      "lat": 8.019,
+      "lng": 126.062
+    },
+    {
+      "purok": "Purok-14",
+      "lat": 8.027,
+      "lng": 126.066
+    },
+    {
+      "purok": "Purok-13A",
+      "lat": 8.023,
+      "lng": 126.048
+    },
+    {
+      "purok": "Purok-14A",
+      "lat": 8.035,
+      "lng": 126.076
+    },
+    {
+      "purok": "Purok-5A",
+      "lat": 8.03,
+      "lng": 126.059
+    },
+    {
+      "purok": "Purok-5B",
+      "lat": 8.04,
+      "lng": 126.063
+    },
+    {
+      "purok": "Purok-4A",
+      "lat": 8.037,
+      "lng": 126.067
+    },
+    {
+      "purok": "Purok-4",
+      "lat": 8.042,
+      "lng": 126.065
+    },
+    {
+      "purok": "Purok-5C",
+      "lat": 8.038,
+      "lng": 126.061
+    },
+    {
+      "purok": "Purok-7",
+      "lat": 8.042,
+      "lng": 126.06
+    },
+    {
+      "purok": "Purok-6",
+      "lat": 8.043,
+      "lng": 126.063
+    },
+    {
+      "purok": "Purok-7A",
+      "lat": 8.04,
+      "lng": 126.057
+    },
+    {
+      "purok": "Purok-11",
+      "lat": 8.036,
+      "lng": 126.058
+    },
+    {
+      "purok": "Purok-9",
+      "lat": 8.034,
+      "lng": 126.047
+    },
+    {
+      "purok": "Purok-7C",
+      "lat": 8.038,
+      "lng": 126.054
+    }
+  ],
+  "Pangyan": [
+    {
+      "purok": "Purok-2",
+      "lat": 7.968,
+      "lng": 126.19
+    },
+    {
+      "purok": "Purok-1",
+      "lat": 7.985,
+      "lng": 126.17
+    },
+    {
+      "purok": "Purok-3 Durian",
+      "lat": 7.988,
+      "lng": 126.162
+    },
+    {
+      "purok": "Purok-4",
+      "lat": 7.987,
+      "lng": 126.196
+    }
+  ],
+  "New Visayas": [
+    {
+      "purok": "Purok-7",
+      "lat": 7.985,
+      "lng": 126.104
+    },
+    {
+      "purok": "Purok-3",
+      "lat": 7.985,
+      "lng": 126.119
+    },
+    {
+      "purok": "Purok-2",
+      "lat": 7.992,
+      "lng": 126.112
+    },
+    {
+      "purok": "Purok-5",
+      "lat": 7.965,
+      "lng": 126.112
+    },
+    {
+      "purok": "Purok-6",
+      "lat": 7.996,
+      "lng": 126.097
+    },
+    {
+      "purok": "Purok-4",
+      "lat": 8.002,
+      "lng": 126.107
+    },
+    {
+      "purok": "Purok-1",
+      "lat": 7.984,
+      "lng": 126.112
+    }
+  ],
+  "Manat": [
+    {
+      "purok": "Purok-4",
+      "lat": 8.09,
+      "lng": 126.095
+    },
+    {
+      "purok": "Purok-1C",
+      "lat": 8.107,
+      "lng": 126.088
+    },
+    {
+      "purok": "Purok-1A",
+      "lat": 8.096,
+      "lng": 126.079
+    },
+    {
+      "purok": "Purok-5",
+      "lat": 8.16,
+      "lng": 126.175
+    },
+    {
+      "purok": "Purok-4, Taglahos",
+      "lat": 8.1,
+      "lng": 126.107
+    },
+    {
+      "purok": "Purok-1B",
+      "lat": 8.1,
+      "lng": 126.079
+    },
+    {
+      "purok": "Purok-3 Upper",
+      "lat": 8.089,
+      "lng": 126.088
+    },
+    {
+      "purok": "Purok-3 Lower",
+      "lat": 8.087,
+      "lng": 126.08
+    },
+    {
+      "purok": "Purok-2",
+      "lat": 8.095,
+      "lng": 126.079
+    }
+  ],
+  "Langkilaan": [
+    {
+      "purok": "Purok-2",
+      "lat": 7.971728,
+      "lng": 126.092177
+    },
+    {
+      "purok": "Purok-8",
+      "lat": 7.960958,
+      "lng": 126.079263
+    },
+    {
+      "purok": "Purok-5",
+      "lat": 7.959381,
+      "lng": 126.088575
+    },
+    {
+      "purok": "Purok-7",
+      "lat": 7.956876,
+      "lng": 126.075641
+    },
+    {
+      "purok": "Purok-6",
+      "lat": 7.955751,
+      "lng": 126.085948
+    },
+    {
+      "purok": "Purok-9",
+      "lat": 7.965635,
+      "lng": 126.06539
+    },
+    {
+      "purok": "Purok-1",
+      "lat": 7.96877,
+      "lng": 126.079983
+    },
+    {
+      "purok": "Purok-4",
+      "lat": 7.979452,
+      "lng": 126.083577
+    },
+    {
+      "purok": "Purok-3",
+      "lat": 7.965016,
+      "lng": 126.091144
+    }
+  ],
+  "Kapatungan": [
+    {
+      "purok": "Purok-20",
+      "lat": 8.089,
+      "lng": 126.045
+    },
+    {
+      "purok": "Purok-19",
+      "lat": 8.086,
+      "lng": 126.049
+    },
+    {
+      "purok": "Purok-11A",
+      "lat": 8.089,
+      "lng": 126.014
+    },
+    {
+      "purok": "Purok-21",
+      "lat": 8.094,
+      "lng": 126.042
+    },
+    {
+      "purok": "Purok-13",
+      "lat": 8.092,
+      "lng": 126.01
+    },
+    {
+      "purok": "Purok-12-A",
+      "lat": 8.089,
+      "lng": 126.008
+    },
+    {
+      "purok": "Purok-14",
+      "lat": 8.097,
+      "lng": 126.0
+    },
+    {
+      "purok": "Purok-15",
+      "lat": 8.094,
+      "lng": 126.012
+    },
+    {
+      "purok": "Purok-2",
+      "lat": 8.082,
+      "lng": 126.032
+    },
+    {
+      "purok": "Purok-1",
+      "lat": 8.086,
+      "lng": 126.028
+    },
+    {
+      "purok": "Purok-4",
+      "lat": 8.079,
+      "lng": 126.04
+    },
+    {
+      "purok": "Purok-3",
+      "lat": 8.08,
+      "lng": 126.037
+    },
+    {
+      "purok": "Purok-8",
+      "lat": 8.075,
+      "lng": 126.044
+    },
+    {
+      "purok": "Purok-5",
+      "lat": 8.076,
+      "lng": 126.041
+    },
+    {
+      "purok": "Purok-22",
+      "lat": 8.065,
+      "lng": 126.034
+    },
+    {
+      "purok": "Purok-6",
+      "lat": 8.068,
+      "lng": 126.046
+    },
+    {
+      "purok": "Purok-16",
+      "lat": 8.073,
+      "lng": 126.022
+    },
+    {
+      "purok": "Purok-7",
+      "lat": 8.071,
+      "lng": 126.032
+    },
+    {
+      "purok": "Purok-10",
+      "lat": 8.083,
+      "lng": 126.018
+    },
+    {
+      "purok": "Purok-9",
+      "lat": 8.08,
+      "lng": 126.02
+    },
+    {
+      "purok": "Purok-12",
+      "lat": 8.083,
+      "lng": 126.009
+    },
+    {
+      "purok": "Purok-11",
+      "lat": 8.081,
+      "lng": 126.014
+    },
+    {
+      "purok": "Purok-18",
+      "lat": 8.084,
+      "lng": 126.051
+    },
+    {
+      "purok": "Purok-17",
+      "lat": 8.081,
+      "lng": 126.054
+    }
+  ],
+  "Cuevas": [
+    {
+      "purok": "Purok-3, Rosal",
+      "lat": 8.021,
+      "lng": 126.088
+    },
+    {
+      "purok": "Purok-6, Bagras",
+      "lat": 8.012,
+      "lng": 126.098
+    },
+    {
+      "purok": "Purok-5, Gumamela",
+      "lat": 8.024,
+      "lng": 126.093
+    },
+    {
+      "purok": "Puro-9 Dahlia",
+      "lat": 8.026,
+      "lng": 126.105
+    },
+    {
+      "purok": "Purok-7, Everlasting",
+      "lat": 8.013,
+      "lng": 126.105
+    },
+    {
+      "purok": "Purok-8, Bagong Silang",
+      "lat": 8.04,
+      "lng": 126.103
+    },
+    {
+      "purok": "Purok-2, Rosal",
+      "lat": 8.021,
+      "lng": 126.083
+    },
+    {
+      "purok": "Purok-1, Cadena de Amor",
+      "lat": 8.02,
+      "lng": 126.075
+    },
+    {
+      "purok": "Purok-4, Duranta",
+      "lat": 8.012,
+      "lng": 126.093
+    }
+  ],
+  "Cebolin": [
+    {
+      "purok": "Purok-3 Boombell",
+      "lat": 8.033,
+      "lng": 126.143
+    },
+    {
+      "purok": "Purok-5 Santan",
+      "lat": 8.056,
+      "lng": 126.126
+    },
+    {
+      "purok": "Purok-6 Gumamela",
+      "lat": 8.047,
+      "lng": 126.121
+    },
+    {
+      "purok": "Purok-4 Rosal",
+      "lat": 8.051,
+      "lng": 126.133
+    },
+    {
+      "purok": "Purok-2 Rose",
+      "lat": 8.033,
+      "lng": 126.135
+    },
+    {
+      "purok": "Purok-1 Orchids",
+      "lat": 8.025,
+      "lng": 126.139
+    },
+    {
+      "purok": "Purok-7 Daisy",
+      "lat": 8.029,
+      "lng": 126.129
+    }
+  ],
+  "Basa": [
+    {
+      "purok": "Purok-3 Taglobog",
+      "lat": 8.072,
+      "lng": 126.082
+    },
+    {
+      "purok": "Purok-7 Igang",
+      "lat": 8.086,
+      "lng": 126.066
+    },
+    {
+      "purok": "Purok-8 Quarry",
+      "lat": 8.078,
+      "lng": 126.067
+    },
+    {
+      "purok": "Purok-5 Marangan",
+      "lat": 8.09,
+      "lng": 126.074
+    },
+    {
+      "purok": "Purok-6 Makauli",
+      "lat": 8.088,
+      "lng": 126.07
+    },
+    {
+      "purok": "Purok-1",
+      "lat": 8.069,
+      "lng": 126.061
+    },
+    {
+      "purok": "Purok-2 Mayniyog",
+      "lat": 8.07,
+      "lng": 126.073
+    },
+    {
+      "purok": "Purok-4 Magadeng",
+      "lat": 8.062,
+      "lng": 126.061
+    },
+    {
+      "purok": "Purok-9 Crossing Maica",
+      "lat": 8.073,
+      "lng": 126.056
+    }
+  ]
+}

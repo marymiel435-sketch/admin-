@@ -1,0 +1,255 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    match /admins/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow write: if false;
+    }
+
+    match /customers/{userId} {
+      allow get, create, update, delete: if isAdmin() || isOwner(userId);
+      allow list: if true;
+    }
+
+    match /riders/{userId} {
+      allow get: if isSignedIn();
+      allow create, delete: if isAdmin() || isOwner(userId);
+      // Owner/admin can update anything; any signed-in user (e.g. a customer
+      // submitting a rating) may update only the rider's aggregate rating stats.
+      allow update: if isAdmin() || isOwner(userId)
+        || (isSignedIn() && request.resource.data.diff(resource.data)
+              .affectedKeys().hasOnly(['rating', 'totalDeliveries', 'updatedAt']));
+      allow list: if true;
+    }
+
+    match /delivery_requests/{requestId} {
+      allow create: if isSignedIn()
+        && request.resource.data.customerId == request.auth.uid;
+
+      allow get, list: if isAdmin()
+        || (isSignedIn() && resource.data.customerId == request.auth.uid)
+        || (isSignedIn() && resource.data.riderId == request.auth.uid)
+        || (isSignedIn() && resource.data.assignedRiderId == request.auth.uid)
+        || isSignedIn();
+
+      allow update: if isAdmin()
+        || (isSignedIn() && resource.data.customerId == request.auth.uid)
+        || (isSignedIn() && resource.data.riderId == request.auth.uid)
+        || (isSignedIn() && resource.data.assignedRiderId == request.auth.uid)
+        || isSignedIn();
+
+      allow delete: if isAdmin();
+    }
+
+    match /live_locations/{riderId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner(riderId) || isAdmin();
+    }
+
+    match /fcm_tokens/{userId} {
+      allow read: if isAdmin();
+      allow write: if isOwner(userId) || isAdmin();
+    }
+
+    match /pending_verifications/{email} {
+      allow read, write: if true;
+    }
+
+    match /stores/{storeId} {
+      // Maintenance-subscription status: the owner may only start their
+      // one-time trial (null -> 'trial') or submit payment proof
+      // (anything -> 'pendingReview') — never self-approve to 'active' or
+      // dismiss a 'rejected' proof themselves. Mirrors the accountStatus
+      // trust model below. The trial/payment *dates and flags* are also
+      // validated here (not just the status enum) so a store owner can't
+      // just write themselves an arbitrary trialEndsAt/subscriptionEndsAt
+      // via a direct API/SDK call that bypasses the app's UI.
+      function authEmail() {
+        return request.auth.token.email.lower();
+      }
+
+      // Trial length is admin-configurable (app_config/subscription_plans,
+      // field `trialDays` — write-protected to isAdmin() by the app_config
+      // rule below), not a hardcoded number, so this reads the live value
+      // at write time instead of trusting anything the client sends.
+      // Falls back to 30 if the doc/field doesn't exist yet.
+      function configuredTrialDays() {
+        return exists(/databases/$(database)/documents/app_config/subscription_plans)
+          ? get(/databases/$(database)/documents/app_config/subscription_plans).data.get('trialDays', 30)
+          : 30;
+      }
+
+      // Whether this signed-in owner's verified email has already used a
+      // free trial before (tracked in trial_registry/{email}, which
+      // survives the store doc being abandoned by deleting the Firebase
+      // Auth account and registering a new one with the same email).
+      function trialAlreadyUsedByEmail() {
+        return exists(/databases/$(database)/documents/trial_registry/$(authEmail()));
+      }
+
+      // A server-clock date can only be *approximately* predicted by the
+      // client ahead of the write landing (request.time isn't known until
+      // commit), so trialEndsAt is checked within a tolerance window
+      // instead of exact equality. This still blocks the actual attack
+      // (granting a far-future date) while absorbing normal clock
+      // skew/latency.
+      function withinTrialWindow() {
+        let target = request.time + duration.value(configuredTrialDays(), 'd');
+        let tolerance = duration.value(1, 'h');
+        return request.resource.data.trialEndsAt >= target - tolerance
+          && request.resource.data.trialEndsAt <= target + tolerance;
+      }
+
+      // The owner's one-time null -> 'trial' transition. hasUsedTrial must
+      // flip false -> true and never again be settable by the owner
+      // (nothing below ever allows it to go back to false). A repeat
+      // signup under the same verified email still gets to make this
+      // transition (so the client never needs to handle a denial here),
+      // but is granted an already-expired trial instead of a real one.
+      function startingTrial() {
+        let before = resource.data.get('subscriptionStatus', null);
+        return before == null
+          && request.resource.data.subscriptionStatus == 'trial'
+          && request.resource.data.planId == 'trial'
+          && resource.data.get('hasUsedTrial', false) == false
+          && request.resource.data.hasUsedTrial == true
+          && request.resource.data.trialStartedAt == request.time
+          && (trialAlreadyUsedByEmail()
+                ? request.resource.data.trialEndsAt <= request.time + duration.value(1, 'h')
+                : withinTrialWindow());
+      }
+
+      // The owner's anything -> 'pendingReview' transition, submitting
+      // proof of payment for a chosen plan.
+      function submittingPaymentProof() {
+        let before = resource.data.get('subscriptionStatus', null);
+        return before != null
+          && request.resource.data.subscriptionStatus == 'pendingReview'
+          && request.resource.data.planId in ['monthly', 'yearly']
+          && request.resource.data.paymentProofUrl is string
+          && request.resource.data.paymentProofUrl.size() > 0;
+      }
+
+      function subscriptionTransitionOk() {
+        let before = resource.data.get('subscriptionStatus', null);
+        let after = request.resource.data.get('subscriptionStatus', null);
+        return after == before || startingTrial() || submittingPaymentProof();
+      }
+
+      allow read: if isSignedIn();
+
+      // A store owner may create their own application (document id must
+      // be their own uid). It must start life as Pending / not yet
+      // visible to customers, with no subscription history yet — only an
+      // admin approval (elsewhere) can ever mark it 'active'/'Approved'.
+      allow create: if isAdmin()
+        || (isOwner(storeId)
+            && request.resource.data.accountStatus == 'Pending'
+            && request.resource.data.status == 'inactive'
+            && request.resource.data.get('hasUsedTrial', false) == false);
+
+      // A store owner may update their own doc (profile edits, day-to-day
+      // 'isOpen' toggle, or resubmitting after a rejection), but can never
+      // touch the mobile visibility 'status' field themselves, and the
+      // only accountStatus
+      // transition they can make on their own is back to 'Pending' —
+      // never self-approve or self-unsuspend.
+      allow update: if isAdmin()
+        || (isOwner(storeId)
+            && request.resource.data.status == resource.data.status
+            && (request.resource.data.accountStatus == resource.data.accountStatus
+                || request.resource.data.accountStatus == 'Pending')
+            && subscriptionTransitionOk());
+
+      allow delete: if isAdmin();
+
+      match /products/{productId} {
+        // Customers only ever see available products; the store owner
+        // sees all of their own (including out-of-stock items in their
+        // dashboard); admins see everything.
+        allow read: if resource.data.available == true
+          || isOwner(storeId)
+          || isAdmin();
+
+        // Adding/editing products is the store's paid functionality —
+        // requires an active trial or paid subscription. This is the real
+        // access-control layer; the app's client-side redirect to
+        // /subscription is UX only and can't be relied on by itself since
+        // a direct API/SDK write would otherwise bypass it.
+        function parentStore() {
+          return get(/databases/$(database)/documents/stores/$(storeId)).data;
+        }
+        function storeSubscriptionOk() {
+          let s = parentStore();
+          let status = s.get('subscriptionStatus', null);
+          return status == null
+            || (status == 'trial' && s.get('trialEndsAt', request.time) > request.time)
+            || (status == 'active'
+                && (s.get('subscriptionEndsAt', null) == null || s.subscriptionEndsAt > request.time));
+        }
+        allow create, update: if isAdmin() || (isOwner(storeId) && storeSubscriptionOk());
+
+        // Deleting/hiding a listing is always allowed even once expired,
+        // so an owner can still take stock down.
+        allow delete: if isOwner(storeId) || isAdmin();
+      }
+    }
+
+    // Tracks which Firebase Auth-verified emails have already used their
+    // free trial, keyed by that email rather than a store/uid — so
+    // deleting the Auth account and re-registering under the same email
+    // (which gets a brand-new uid and a brand-new stores/{uid} doc) can't
+    // grant a second trial. Only the doc's existence is checked (in
+    // `startingTrial()` above); its contents aren't otherwise trusted.
+    match /trial_registry/{email} {
+      // The owner may check their own email's eligibility (so the app can
+      // decide what trialEndsAt to send *before* writing the store doc,
+      // instead of guessing and getting denied) — the rule in
+      // startingTrial() above re-derives and enforces this independently
+      // either way, so this read doesn't weaken anything.
+      allow read: if isAdmin() || (isSignedIn() && email == request.auth.token.email.lower());
+      allow create, update: if isSignedIn() && email == request.auth.token.email.lower();
+      allow delete: if isAdmin();
+    }
+
+    match /notifications/{userId}/items/{notifId} {
+      // Owner can read, mark as read (update), or delete their own notifications
+      allow read, update, delete: if isOwner(userId);
+      // Any signed-in user (rider, customer, or admin) can create a notification
+      // for another user — needed so riders can notify customers and vice versa
+      allow create: if isSignedIn();
+    }
+
+    match /rider_notifications/{riderId}/items/{notifId} {
+      allow read, update, delete: if isOwner(riderId);
+      allow create: if isSignedIn();
+    }
+
+    match /delivery_tracks/{requestId} {
+      allow read: if isAdmin();
+      allow write: if isSignedIn();
+    }
+
+    match /app_config/{configId} {
+      // The Pabili category list is read by the registration form before
+      // the applicant is signed in, so that one doc is public read;
+      // everything else under app_config still requires a signed-in user.
+      allow read: if configId == 'pabili_categories' || isSignedIn();
+      allow write: if isAdmin();
+    }
+  }
+}

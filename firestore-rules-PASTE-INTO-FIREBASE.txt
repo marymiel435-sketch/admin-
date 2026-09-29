@@ -1,0 +1,155 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    match /admins/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      // An admin may edit their own profile, but only the name/phone/photoUrl
+      // fields — role and email can never be touched from the client.
+      allow update: if isOwner(userId)
+        && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['name', 'phone', 'photoUrl']);
+      allow create, delete: if false;
+    }
+
+    match /customers/{userId} {
+      allow get, create, update, delete: if isAdmin() || isOwner(userId);
+      allow list: if true;
+    }
+
+    match /riders/{userId} {
+      allow get: if isSignedIn();
+      allow create, delete: if isAdmin() || isOwner(userId);
+      // Owner/admin can update anything; any signed-in user (e.g. a customer
+      // submitting a rating) may update only the rider's aggregate rating stats.
+      allow update: if isAdmin() || isOwner(userId)
+        || (isSignedIn() && request.resource.data.diff(resource.data)
+              .affectedKeys().hasOnly(['rating', 'totalDeliveries', 'updatedAt']));
+      allow list: if true;
+    }
+
+    match /delivery_requests/{requestId} {
+      allow create: if isSignedIn()
+        && request.resource.data.customerId == request.auth.uid;
+
+      allow get, list: if isAdmin()
+        || (isSignedIn() && resource.data.customerId == request.auth.uid)
+        || (isSignedIn() && resource.data.riderId == request.auth.uid)
+        || (isSignedIn() && resource.data.assignedRiderId == request.auth.uid)
+        || isSignedIn();
+
+      allow update: if isAdmin()
+        || (isSignedIn() && resource.data.customerId == request.auth.uid)
+        || (isSignedIn() && resource.data.riderId == request.auth.uid)
+        || (isSignedIn() && resource.data.assignedRiderId == request.auth.uid)
+        || isSignedIn();
+
+      allow delete: if isAdmin();
+    }
+
+    match /live_locations/{riderId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner(riderId) || isAdmin();
+    }
+
+    match /fcm_tokens/{userId} {
+      allow read: if isAdmin();
+      allow write: if isOwner(userId) || isAdmin();
+    }
+
+    match /pending_verifications/{email} {
+      allow read, write: if true;
+    }
+
+    match /stores/{storeId} {
+      allow read: if isSignedIn();
+
+      // A store owner may create their own application (document id must
+      // be their own uid). It must start life as Pending / not yet
+      // visible to customers — only an admin approval (elsewhere) can
+      // ever mark it 'active'/'Approved'.
+      allow create: if isAdmin()
+        || (isOwner(storeId)
+            && request.resource.data.accountStatus == 'Pending'
+            && request.resource.data.status == 'inactive');
+
+      // A store owner may update their own doc (profile edits, or
+      // resubmitting after a rejection), but can never touch the mobile
+      // visibility 'status' field themselves, and the only accountStatus
+      // transition they can make on their own is back to 'Pending' —
+      // never self-approve or self-unsuspend.
+      allow update: if isAdmin()
+        || (isOwner(storeId)
+            && request.resource.data.status == resource.data.status
+            && (request.resource.data.accountStatus == resource.data.accountStatus
+                || request.resource.data.accountStatus == 'Pending'));
+
+      allow delete: if isAdmin();
+
+      match /products/{productId} {
+        // Any signed-in user (customer browsing, store owner, admin) can
+        // read a product regardless of availability — unavailable items are
+        // shown to customers dimmed/disabled rather than hidden entirely.
+        allow read: if isSignedIn() || isOwner(storeId) || isAdmin();
+        allow write: if isOwner(storeId) || isAdmin();
+      }
+    }
+
+    match /notifications/{userId}/items/{notifId} {
+      // Owner can read, mark as read (update), or delete their own notifications
+      allow read, update, delete: if isOwner(userId);
+      // Any signed-in user (rider, customer, or admin) can create a notification
+      // for another user — needed so riders can notify customers and vice versa
+      allow create: if isSignedIn();
+    }
+
+    match /rider_notifications/{riderId}/items/{notifId} {
+      allow read, update, delete: if isOwner(riderId);
+      allow create: if isSignedIn();
+    }
+
+    match /delivery_tracks/{requestId} {
+      allow read: if isAdmin();
+      allow write: if isSignedIn();
+    }
+
+    // App-wide config, e.g. app_config/fare_settings (baseFare,
+    // baseDistanceKm, ratePerKm) — set by Admin in the admin panel,
+    // read live by the customer/rider apps to price deliveries.
+    match /app_config/{configId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // Rider-raised emergency alerts. A rider may only create their own
+    // (riderId must match their uid) and read it back to see if it's been
+    // resolved; only admins can list all alerts or mark one resolved.
+    match /sos_alerts/{alertId} {
+      allow create: if isSignedIn()
+        && request.resource.data.riderId == request.auth.uid;
+      allow get: if isAdmin() || resource.data.riderId == request.auth.uid;
+      allow list: if isAdmin();
+      allow update, delete: if isAdmin();
+    }
+
+    // Revenue ledger written by the admin panel when a subscription payment
+    // is approved (see stores/{storeId}.subscriptionStatus). Admin-only —
+    // the Store app never reads or writes this.
+    match /subscription_payments/{paymentId} {
+      allow read, write: if isAdmin();
+    }
+  }
+}

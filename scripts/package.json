@@ -1,0 +1,9 @@
+{
+  "name": "admin-vluerides-scripts",
+  "private": true,
+  "version": "1.0.0",
+  "description": "One-off admin/maintenance scripts for the VlueRides Firestore project. Not part of the Flutter app.",
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}

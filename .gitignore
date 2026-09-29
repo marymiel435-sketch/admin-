@@ -1,0 +1,43 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Node / React (react-admin has its own .gitignore for node_modules/dist,
+# this covers stray installs at the repo root e.g. in scripts/)
+node_modules/
+dist/
+
+# Firebase service account keys — never commit, these grant full admin
+# access to the Firestore project (used by scripts/*.js one-off scripts)
+*firebase-adminsdk*.json
+*serviceAccountKey*.json
+
+# Firebase CLI local state
+.firebase/
+firebase-debug.log
+
+# Upload packages and the Android APK — too large for GitHub (100 MB limit).
+# Rebuild the zips with `npm run build:site` in react-admin.
+*.zip
+*.tar.gz
+*.apk
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Store portal's original standalone git history (kept locally, not uploaded)
+.git-store-history/

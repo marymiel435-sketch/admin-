@@ -1,0 +1,45 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "admin-vluerides",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "*.log"
+      ]
+    }
+  ],
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "vluerides-application-73c49",
+          "appId": "1:600750548829:android:04b0f1980e72ae1b9c6ab4",
+          "fileOutput": "android/app/google-services.json"
+        }
+      }
+    },
+    "dart": {
+      "lib/firebase_options.dart": {
+        "projectId": "vluerides-application-73c49",
+        "configurations": {
+          "android": "1:600750548829:android:04b0f1980e72ae1b9c6ab4",
+          "ios": "1:600750548829:ios:3b54464545029e6a9c6ab4",
+          "macos": "1:600750548829:ios:3b54464545029e6a9c6ab4",
+          "web": "1:600750548829:web:d84b0ad711ea6ae29c6ab4",
+          "windows": "1:600750548829:web:9f142dccc2e6915e9c6ab4"
+        }
+      }
+    }
+  }
+}
